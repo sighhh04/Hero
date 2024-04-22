@@ -17,10 +17,26 @@ public class spawnManager : MonoBehaviour
 
     public Text mEggsOnScreen = null;
 
+    public GameObject[] checkpoints;
+
+    public Text waypointsMode;
+    public bool isSequential = true;
+
+    public Text waypointsVisible;
+    public bool isVisible = true;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        for (int i = 0; i < checkpoints.Length; i++)
+        {
+            GameObject c = Instantiate(checkpoints[i]);
+            Vector3 pos;
+            pos.x = Random.Range(-178f, 178f);
+            pos.y = Random.Range(-100f, 100f);
+            pos.z = 0;
+            c.transform.localPosition = pos;
+        }
     }
 
     // Update is called once per frame
@@ -35,6 +51,17 @@ public class spawnManager : MonoBehaviour
 #else
             Application.Quit();
 #endif
+        }
+
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            isSequential = !isSequential;
+            Debug.Log(isSequential);
+        }
+
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            isVisible = !isVisible;
         }
 
         GameObject[] projectiles = GameObject.FindGameObjectsWithTag("Finish");
@@ -54,6 +81,24 @@ public class spawnManager : MonoBehaviour
             ++numberOfPlanes;
         }
         mEnemyDestroyed.text = "Planes destroyed(" + mPlanesDestroyed + ")";
+        if (isSequential)
+        {
+            waypointsMode.text = "WAYPOINTS: (Sequence)";
+        }
+        else
+        {
+            waypointsMode.text = "WAYPOINTS: (Random)";
+        }
+
+        if (isVisible)
+        {
+            waypointsVisible.text = "waypoints visible: (YES)";
+        }
+        else
+        {
+            waypointsVisible.text = "waypoints visible: (NO)";
+        }
+        
     }
     public void EnemyDestroyed()
     {

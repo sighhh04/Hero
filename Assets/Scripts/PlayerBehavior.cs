@@ -16,6 +16,7 @@ public class PlayerBehavior : MonoBehaviour
     
     public float cooldown = .2f;
     private float time = 0f;
+    public Slider cooldownSlider;
 
     // Start is called before the first frame update
     void Start()
@@ -66,11 +67,13 @@ public class PlayerBehavior : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.Space) && time > cooldown)
         {   
+            
             time = 0f;
             spawnProjectile();
+
         }
 
-        
+        cooldownSlider.value = Mathf.Clamp01(time / cooldown);
         transform.position = pos;
         
     }
